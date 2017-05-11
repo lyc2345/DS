@@ -1,8 +1,8 @@
 {
   "name": "DS",
   "version": "0.1.0",
-  "summary": "A short description of DS.",
-  "description": "TODO: Add long description of the pod here.",
+  "summary": "DS is a Differential Synchronization implement in Objective-C",
+  "description": "DS is a Differential Synchronization implement in Objective-C, idea come from Neil Fraser",
   "homepage": "https://github.com/lyc2345/DS",
   "license": {
     "type": "MIT",

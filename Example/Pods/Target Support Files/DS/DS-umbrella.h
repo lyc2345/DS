@@ -10,6 +10,7 @@
 #endif
 #endif
 
+#import "DS.h"
 
 FOUNDATION_EXPORT double DSVersionNumber;
 FOUNDATION_EXPORT const unsigned char DSVersionString[];

@@ -6,9 +6,10 @@ target 'DS_Example' do
   target 'DS_Tests' do
     inherit! :search_paths
 
+		pod 'DS', :path => '../'
     pod 'Specta'
-  pod 'Expecta'
-  pod 'FBSnapshotTestCase'
-  pod 'Expecta+Snapshots'
+		pod 'Expecta'
+		pod 'FBSnapshotTestCase'
+		pod 'Expecta+Snapshots'
   end
 end
