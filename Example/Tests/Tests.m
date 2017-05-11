@@ -118,13 +118,16 @@ SpecBegin(ThirdSpec)
 
 describe(@"diff client_shadow first, apply remote into client, apply client_shadow_diff into remote, 3.1", ^{
 	
-	NSArray *remote = @[@"A", @"B", @"E"];
+	NSArray *remote = @[@"A", @"B", @"C"];
 	NSArray *client = @[@"A", @"B", @"C", @"D"];
 	NSArray *shadow = remote;
+	
+	NSDictionary *diff_client_shadow = [DS diffShadowAndClient: client shadow: shadow];
 	
 	NSDictionary *need_to_apply_to_client = [DS diffWins: remote andLoses: client];
 	NSArray *newClient = [DS mergeInto: client applyDiff: need_to_apply_to_client];
 	
+	newClient = [DS mergeInto: newClient applyDiff: diff_client_shadow];
 	
 	NSDictionary *need_to_apply_to_remote = [DS diffShadowAndClient: newClient shadow: shadow];
 	NSArray *newRemote = [DS mergeInto: remote applyDiff: need_to_apply_to_remote];
@@ -135,6 +138,7 @@ describe(@"diff client_shadow first, apply remote into client, apply client_shad
 		
 		expect([newClient sort]).to.equal([newRemote sort]);
 		expect([newRemote sort]).to.equal([shadow sort]);
+		expect([newRemote sort]).to.equal(@[@"A", @"B", @"C", @"D"]);
 	});
 });
 
