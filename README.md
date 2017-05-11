@@ -17,7 +17,7 @@ DS is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
 ```ruby
-pod "DS"
+pod "DS", :git=> 'https://www.github.com/lyc2345/DS.git'
 ```
 
 ## Author
