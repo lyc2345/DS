@@ -25,21 +25,30 @@ NSArray *remote = @[@"A", @"B", @"C"];
 NSArray *client = @[@"A", @"B", @"C", @"D"]; // client add "D"
 NSArray *shadow = @[@"A", @"B", @"C"]; // last synchronized result == remote
 
+// obtain a diff from client and shadow.
 NSDictionary *diff_client_shadow = [DS diffShadowAndClient: client shadow: shadow];
 
+// obtain a diff from remote and client.
 NSDictionary *need_to_apply_to_client = [DS diffWins: remote andLoses: client];
+// apply remote_cilent_diff into client.
 NSArray *newClient = [DS mergeInto: client applyDiff: need_to_apply_to_client];
 
+// obtain a new client that applied diff_remote_client and diff_client_shadow.
 newClient = [DS mergeInto: newClient applyDiff: diff_client_shadow];
 
+// obtain a diff from remote and newClient.
 NSDictionary *need_to_apply_to_remote = [DS diffShadowAndClient: newClient shadow: shadow];
+
+// assuming push diff to remote.
 NSArray *newRemote = [DS mergeInto: remote applyDiff: need_to_apply_to_remote];
 
-// assuming push successfully.
-shadow = newRemote == client = @[@"A", @"B", @"C", @"D"];
+// assuming push successfully. save newRemote in shadow
+shadow = newRemote
+
+// shadow == newRemote == newClient = @[@"A", @"B", @"C", @"D"];
 	
 ```
-Or you can refer to Tests.m line: 119, test 3.1
+This example you can refer to Tests.m line: 119, test 3.1
 
 
 
