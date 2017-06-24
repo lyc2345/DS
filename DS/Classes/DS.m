@@ -17,29 +17,23 @@
 }
 
 +(NSDictionary *)diffFormatFromAdd:(NSArray *)add delete:(NSArray *)delete replace:(NSArray *)replace {
-	
-	return @{@"_add": add, @"_delete": delete, @"_replace": replace};
+  
+  return @{@"_add": add, @"_delete": delete, @"_replace": replace};
 }
 
 +(NSDictionary *)diffShadowAndClient:(NSArray *)client shadow:(NSArray *)shadow {
-	
-	NSMutableSet *shadowMutableSet = [NSMutableSet setWithArray: shadow];
-	NSMutableSet *clientMutableSet = [NSMutableSet setWithArray: client];
-	
-	NSMutableSet *commonSet = [NSMutableSet setWithArray: client];
-	
-	[commonSet intersectSet: shadowMutableSet];
-	
-	[shadowMutableSet minusSet: commonSet];
-	NSArray *waitToDelete = [shadowMutableSet allObjects];
-	
-	
-	[clientMutableSet minusSet: commonSet];
-	NSArray *waitToAdd = [clientMutableSet allObjects];
-	
+  
+  NSDictionary *sets = [DS diffSetWins: shadow losesSet: client];
+  
+  NSMutableSet *winsMutableSet = sets[@"_winSet"];
+  NSMutableSet *losesMutableSet = sets[@"_loseSet"];
+  
+  NSArray *waitToDelete = [winsMutableSet allObjects];
+  NSArray *waitToAdd = [losesMutableSet allObjects];
+  
   NSDictionary *diff = [DS diffFormatFromAdd: waitToAdd delete: waitToDelete replace: @[]];
-	//NSLog(@"diff: %@", diff);
-	return diff;
+  //NSLog(@"diff: %@", diff);
+  return diff;
 }
 
 // Generate both wins set and loses set.
@@ -123,28 +117,29 @@
 }
 
 +(NSArray *)mergeInto:(NSArray *)into applyDiff:(NSDictionary *)diff {
-	
-	NSMutableArray *newInto;
-	
-	NSArray *add = diff[@"_add"];
-	NSArray *delete = diff[@"_delete"];
-	
-	NSMutableSet *intoMutableSet = [NSMutableSet setWithArray: into];
-	
-	NSSet *deleteSet = [NSSet setWithArray: delete];
-	[intoMutableSet minusSet: deleteSet];
-	
-	newInto = [[intoMutableSet allObjects] mutableCopy];
-	
-	[add enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-		
-		if (![newInto containsObject: obj]) {
-			[newInto addObject: obj];
-		}
-	}];
-	
-	return newInto;
+  
+  NSMutableArray *newInto;
+  
+  NSArray *add = diff[@"_add"];
+  NSArray *delete = diff[@"_delete"];
+  
+  NSMutableSet *intoMutableSet = [NSMutableSet setWithArray: into];
+  
+  NSSet *deleteSet = [NSSet setWithArray: delete];
+  [intoMutableSet minusSet: deleteSet];
+  
+  newInto = [[intoMutableSet allObjects] mutableCopy];
+  
+  [add enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    
+    if (![newInto containsObject: obj]) {
+      [newInto addObject: obj];
+    }
+  }];
+  
+  return newInto;
 }
 
 
 @end
+
