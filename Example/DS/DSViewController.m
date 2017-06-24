@@ -73,7 +73,10 @@
   
   NSLog(@"diff: %@", diff);
   
+  
+  NSDictionary *diff2 = [DS diffWins: @[@"B", @"C", @"D"] andLoses: @[@"A", @"B", @"C"]];
 
+  NSLog(@"diff2: %@", diff2);
 }
 
 @end
