@@ -9,6 +9,16 @@ Inspired by Neil Fraser, [Differential Synchronization](https://neil.fraser.name
 
 ![Image of DS](https://neil.fraser.name/writing/sync/diff2.gif) 
 
+#### Deprecated!
+```objective-c
+// Deprecated!
++(NSDictionary *)diffShadowAndClient:(NSArray *)client shadow:(NSArray *)shadow;
+
+// Use below
++(NSDictionary *)diffSetWins:(NSArray *)wins losesSet:(NSArray *)loses;
+
+[DS diffSetWins: shadow losesSet: client];
+```
 
 ## Usage
 Differential Synchronizatioin step by step
@@ -20,6 +30,7 @@ Differential Synchronizatioin step by step
 6. if push success, save whole new client in shadow.
 
 ## Example
+This example you can refer to Tests.m line: 119, test 3.1
 ```objective-c
 NSArray *remote = @[@"A", @"B", @"C"];
 NSArray *client = @[@"A", @"B", @"C", @"D"]; // client add "D"
@@ -30,6 +41,7 @@ NSDictionary *diff_client_shadow = [DS diffShadowAndClient: client shadow: shado
 
 // obtain a diff from remote and client.
 NSDictionary *need_to_apply_to_client = [DS diffWins: remote andLoses: client];
+
 // apply remote_cilent_diff into client.
 NSArray *newClient = [DS mergeInto: client applyDiff: need_to_apply_to_client];
 
@@ -48,14 +60,77 @@ shadow = newRemote
 // shadow == newRemote == newClient = @[@"A", @"B", @"C", @"D"];
 	
 ```
-This example you can refer to Tests.m line: 119, test 3.1
 
+This example you can refer to DuplicateTests.m line: 43, test @"custom differential use duplicate and replace handler, same key but value changed 1.0"
+```objective-c
+NSArray *remote = @[
+                      @{@"name": @"A", @"url": @"A"},
+                      @{@"name": @"B", @"url": @"B"},
+                      @{@"name": @"C", @"url": @"C"}
+                      ];
+  
+  // client add "D", change A' url to A1
+  NSArray *client = @[
+                      @{@"name": @"A", @"url": @"A1"},
+                      @{@"name": @"B", @"url": @"B"},
+                      @{@"name": @"C", @"url": @"C"},
+                      @{@"name": @"D", @"url": @"D"}
+                      ];
+  
+  // last synchronized result == remote
+  NSArray *shadow = @[
+                      @{@"name": @"A", @"url": @"A"},
+                      @{@"name": @"B", @"url": @"B"},
+                      @{@"name": @"C", @"url": @"C"}
+                      ];
+  // add: [@{@"name": @"D", @"url": @"D"}],
+  // delete: [@{@"name": @"A", @"url": @"A"}],
+  // replace: [@{@"name": @A", @"url": @"A1"}]
+  NSDictionary *diff_client_shadow = [DS diffWins: client andLoses: shadow duplicate:^id(id add, id delete) {
+    
+    __block NSMutableArray *replace = [NSMutableArray array];
+    [add enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+      
+      NSDictionary *addObject = obj;
+      [delete enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+        if ([addObject[@"name"] isEqualToString: obj[@"name"]]) {
+          
+          [replace addObject: addObject];
+        }
+      }];
+    }];
+    return replace.count > 0 ? replace : nil;
+    
+  } shouldReplace:^BOOL(id deplicate) {
+    
+    return NO;
+  }];
+  /*
+// shadow @[@{@"name": @"A", @"url": @"A"},
+            @{@"name": @"B", @"url": @"B"},
+            @{@"name": @"C", @"url": @"C"}]
 
+diff   
+// add: [@{@"name": @"D", @"url": @"D"}],
+// delete: [@{@"name": @"A", @"url": @"A"}],
+// replace: [@{@"name": @A", @"url": @"A1"}]
+*/
+		      
+  NSArray *newClient = [DS mergeInto: shadow applyDiff: need_to_apply_to_client];
+	
+newClient = @[
+                      @{@"name": @"A", @"url": @"A1"},
+                      @{@"name": @"B", @"url": @"B"},
+                      @{@"name": @"C", @"url": @"C"},
+                      @{@"name": @"D", @"url": @"D"}
+                      ];
+```
+
+## Installation
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
-
-## Installation
 
 DS is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
