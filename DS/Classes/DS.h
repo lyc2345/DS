@@ -13,6 +13,7 @@
 +(NSDictionary *)diffShadowAndClient:(NSArray *)client
                               shadow:(NSArray *)shadow;
 
++(NSDictionary *)diffWins:(NSArray *)wins andLoses:(NSArray *)loses;
 
 +(NSDictionary *)diffWins:(NSArray *)wins
                  andLoses:(NSArray *)loses

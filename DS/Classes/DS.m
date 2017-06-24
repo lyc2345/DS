@@ -37,6 +37,25 @@
 	return diff;
 }
 
++(NSDictionary *)diffWins:(NSArray *)wins andLoses:(NSArray *)loses {
+  
+  NSMutableSet *winsMutableSet = [NSMutableSet setWithArray: wins];
+  NSMutableSet *losesMutableSet = [NSMutableSet setWithArray: loses];
+  
+  NSMutableSet *commonSet = [NSMutableSet setWithArray: loses];
+  [commonSet intersectSet: winsMutableSet];
+  
+  [losesMutableSet minusSet: commonSet];
+  NSArray *waitToDelete = [losesMutableSet allObjects];
+  
+  [winsMutableSet minusSet: commonSet];
+  NSArray *waitToAdd = [winsMutableSet allObjects];
+  
+  NSDictionary *diff = [DS diffFormatFromAdd: waitToAdd delete: waitToDelete];
+  //NSDictionary *diff = [DS diffFormatFromConditionArray:@[waitToAddByClient, waitToAddByRemote]];
+  //NSLog(@"diff: %@", diff);
+  return diff;
+}
 
 +(NSDictionary *)diffWins:(NSArray *)wins
                  andLoses:(NSArray *)loses
