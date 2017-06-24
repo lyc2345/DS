@@ -122,6 +122,7 @@
   
   NSArray *add = diff[@"_add"];
   NSArray *delete = diff[@"_delete"];
+  NSArray *replace = diff[@"_replace"];
   
   NSMutableSet *intoMutableSet = [NSMutableSet setWithArray: into];
   
@@ -136,6 +137,15 @@
       [newInto addObject: obj];
     }
   }];
+  
+  if (replace && replace.count > 0) {
+    [replace enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+      
+      if (![newInto containsObject: obj]) {
+        [newInto addObject: obj];
+      }
+    }];
+  }
   
   return newInto;
 }

@@ -25,6 +25,17 @@
 	return [self sortedArrayUsingSelector: @selector(localizedCompare:)];
 }
 
+-(NSArray *)dictSort {
+  
+  return [self sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+    
+    NSString *author1 = obj1[@"name"];
+    NSString *author2 = obj2[@"name"];
+    
+    return [author1 localizedStandardCompare: author2];
+  }];
+}
+
 @end
 
 SpecBegin(InitialSpecs)
@@ -125,7 +136,7 @@ describe(@"diff client_shadow first, apply remote into client, apply client_shad
 	NSDictionary *diff_client_shadow = [DS diffShadowAndClient: client shadow: shadow];
 	
 	NSDictionary *need_to_apply_to_client = [DS diffWins: remote andLoses: client];
-	NSArray *newClient = [DS mergeInto: client applyDiff: need_to_apply_to_client];
+	NSArray *newClient = [DS mergeInto: shadow applyDiff: need_to_apply_to_client];
 	
 	newClient = [DS mergeInto: newClient applyDiff: diff_client_shadow];
 	
@@ -151,7 +162,7 @@ describe(@"diff client_shadow first, remote is reset, reset shadow as well, prev
 	NSDictionary *diff_client_shadow = [DS diffShadowAndClient: client shadow: shadow];
 	
 	NSDictionary *need_to_apply_to_client = [DS diffWins: remote andLoses: client];
-	NSArray *newClient = [DS mergeInto: client applyDiff: need_to_apply_to_client];
+	NSArray *newClient = [DS mergeInto: shadow applyDiff: need_to_apply_to_client];
 	
 	newClient = [DS mergeInto: newClient applyDiff: diff_client_shadow];
 	
@@ -177,7 +188,7 @@ describe(@"different device start with empty shadow, diff client_shadow first, a
 	NSDictionary *diff_client_shadow = [DS diffShadowAndClient: client shadow: shadow];
 	
 	NSDictionary *need_to_apply_to_client = [DS diffWins: remote andLoses: client];
-	NSArray *newClient = [DS mergeInto: client applyDiff: need_to_apply_to_client];
+	NSArray *newClient = [DS mergeInto: shadow applyDiff: need_to_apply_to_client];
 	
 	newClient = [DS mergeInto: newClient applyDiff: diff_client_shadow];
 	
@@ -193,7 +204,6 @@ describe(@"different device start with empty shadow, diff client_shadow first, a
 		expect([newClient sort]).to.equal(@[@"A", @"B", @"C", @"D", @"E", @"F"]);
 	});
 });
-
 
 SpecEnd
 
