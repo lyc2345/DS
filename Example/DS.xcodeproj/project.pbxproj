@@ -57,11 +57,11 @@
 		6003F5B9195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
-		6190978B7D345424B50F8F0F /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
-		6A05F8B96B059ED34520483E /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		6190978B7D345424B50F8F0F /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		6A05F8B96B059ED34520483E /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		71719F9E1E33DC2100824A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7261D2CDC35B0B65550F4C2D /* Pods_DS_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DS_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		77DB9E2DCAE7C8874D846D1A /* DS.podspec */ = {isa = PBXFileReference; includeInIndex = 1; name = DS.podspec; path = ../DS.podspec; sourceTree = "<group>"; };
+		77DB9E2DCAE7C8874D846D1A /* DS.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = DS.podspec; path = ../DS.podspec; sourceTree = "<group>"; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		92D5AA9707E3149096FDE390 /* Pods_DS_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DS_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA542B0B2C374B658F532299 /* Pods-DS_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DS_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-DS_Example/Pods-DS_Example.release.xcconfig"; sourceTree = "<group>"; };
@@ -250,7 +250,11 @@
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = lyc2345;
 				TargetAttributes = {
+					6003F589195388D20070C39A = {
+						DevelopmentTeam = 29DN3FMVP9;
+					};
 					6003F5AD195388D20070C39A = {
+						DevelopmentTeam = 29DN3FMVP9;
 						TestTargetID = 6003F589195388D20070C39A;
 					};
 				};
@@ -524,6 +528,7 @@
 			baseConfigurationReference = CF26EE89EA5DC79137FA60CF /* Pods-DS_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 29DN3FMVP9;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DS/DS-Prefix.pch";
 				INFOPLIST_FILE = "DS/DS-Info.plist";
@@ -539,6 +544,7 @@
 			baseConfigurationReference = CA542B0B2C374B658F532299 /* Pods-DS_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 29DN3FMVP9;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DS/DS-Prefix.pch";
 				INFOPLIST_FILE = "DS/DS-Info.plist";
@@ -554,6 +560,7 @@
 			baseConfigurationReference = F466BA58210D156C8BF35675 /* Pods-DS_Tests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 29DN3FMVP9;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -578,6 +585,7 @@
 			baseConfigurationReference = 0580A36D5513F179EAE3EFB7 /* Pods-DS_Tests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 29DN3FMVP9;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
