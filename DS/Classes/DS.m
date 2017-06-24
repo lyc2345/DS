@@ -11,9 +11,9 @@
 @implementation DS
 
 // generate diff content
-+(NSDictionary *)diffFormatFromAdd:(NSArray *)add delete:(NSArray *)delete {
++(NSDictionary *)diffFormatFromAdd:(NSArray *)add delete:(NSArray *)delete replace:(NSArray *)replace {
 	
-	return @{@"_add": add, @"_delete": delete};
+	return @{@"_add": add, @"_delete": delete, @"_replace": replace};
 }
 
 +(NSDictionary *)diffShadowAndClient:(NSArray *)client shadow:(NSArray *)shadow {
@@ -32,13 +32,35 @@
 	[clientMutableSet minusSet: commonSet];
 	NSArray *waitToAdd = [clientMutableSet allObjects];
 	
-	NSDictionary *diff = [DS diffFormatFromAdd: waitToAdd delete: waitToDelete];
+  NSDictionary *diff = [DS diffFormatFromAdd: waitToAdd delete: waitToDelete replace: @[]];
 	//NSLog(@"diff: %@", diff);
 	return diff;
 }
 
-
 +(NSDictionary *)diffWins:(NSArray *)wins andLoses:(NSArray *)loses {
+  
+  NSMutableSet *winsMutableSet = [NSMutableSet setWithArray: wins];
+  NSMutableSet *losesMutableSet = [NSMutableSet setWithArray: loses];
+  
+  NSMutableSet *commonSet = [NSMutableSet setWithArray: loses];
+  [commonSet intersectSet: winsMutableSet];
+  
+  [losesMutableSet minusSet: commonSet];
+  NSArray *waitToDelete = [losesMutableSet allObjects];
+  
+  [winsMutableSet minusSet: commonSet];
+  NSArray *waitToAdd = [winsMutableSet allObjects];
+  
+  NSDictionary *diff = [DS diffFormatFromAdd: waitToAdd delete: waitToDelete];
+  //NSDictionary *diff = [DS diffFormatFromConditionArray:@[waitToAddByClient, waitToAddByRemote]];
+  //NSLog(@"diff: %@", diff);
+  return diff;
+}
+
++(NSDictionary *)diffWins:(NSArray *)wins
+                 andLoses:(NSArray *)loses
+                duplicate:(id(^)(id add, id delete))duplicate
+            shouldReplace:(BOOL(^)(id deplicate))shouldReplace {
 	
 	NSMutableSet *winsMutableSet = [NSMutableSet setWithArray: wins];
 	NSMutableSet *losesMutableSet = [NSMutableSet setWithArray: loses];
@@ -51,11 +73,23 @@
 	
 	[winsMutableSet minusSet: commonSet];
 	NSArray *waitToAdd = [winsMutableSet allObjects];
-	
-	NSDictionary *diff = [DS diffFormatFromAdd: waitToAdd delete: waitToDelete];
-	//NSDictionary *diff = [DS diffFormatFromConditionArray:@[waitToAddByClient, waitToAddByRemote]];
+  
+  NSArray *duplicated = duplicate(waitToAdd, waitToDelete);
+  
+  if (duplicated || duplicated.count > 0) {
+    
+    [winsMutableSet minusSet: [NSMutableSet setWithArray: duplicated]];
+    NSArray *newAdd = [winsMutableSet allObjects];
+    
+    if (shouldReplace(duplicated)) {
+      return [DS diffFormatFromAdd: newAdd delete: waitToDelete replace: duplicated];
+    } else {
+      return [DS diffFormatFromAdd: newAdd delete: @[] replace: @[]];
+    }
+  }
+  //NSDictionary *diff = [DS diffFormatFromConditionArray:@[waitToAddByClient, waitToAddByRemote]];
 	//NSLog(@"diff: %@", diff);
-	return diff;
+  return [DS diffFormatFromAdd: waitToAdd delete: @[] replace: @[]];
 }
 
 +(NSArray *)mergeInto:(NSArray *)into applyDiff:(NSDictionary *)diff {
