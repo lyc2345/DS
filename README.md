@@ -61,6 +61,24 @@ shadow = newRemote
 	
 ```
 
+##### New Method for duplicate objects
+```
+/**
+Get a diff between win and lose. Both win and lose are depend what data are you defining and you can handle the duplicate data which you want to replace or not.
+
+@param wins wins is the data that you think is most important
+@param loses loses is the data that you think is less important compares to wins
+@param duplicate block send a "wait to be added" data and a "wait to be deleted" data to find a duplicate for return. But here you need to implement by youself. But beware, if you don't return duplicate objects, that means if DS find duplicate objects, DS still does the force replacement for you. Even shouldReplace is NO.
+@param shouldReplace shouldReplace block sent a duplicate data and return a Boolean that you can choose that whether you want to replace it or not.
+@return a diff which is a dictionary that contains format: @{"add", "delete", "replace"}
+*/
++(NSDictionary *)diffWins:(NSArray *)wins
+                 andLoses:(NSArray *)loses
+                duplicate:(id(^)(id add, id delete))duplicate
+            shouldReplace:(BOOL(^)(id deplicate))shouldReplace;
+```
+
+
 This example you can refer to DuplicateTests.m line: 43, test @"custom differential use duplicate and replace handler, same key but value changed 1.0"
 ```objective-c
 NSArray *remote = @[
@@ -88,6 +106,7 @@ NSArray *remote = @[
   // replace: [@{@"name": @A", @"url": @"A1"}]
   NSDictionary *diff_client_shadow = [DS diffWins: client andLoses: shadow duplicate:^id(id add, id delete) {
     
+  // add a custom method to find your own duplicate.
     __block NSMutableArray *replace = [NSMutableArray array];
     [add enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
       
@@ -100,6 +119,8 @@ NSArray *remote = @[
         }
       }];
     }];
+  // return duplicate objects. BEWARE: if you return nil. means you don't find a duplicate object.
+  // so it means if DS find a duplicate object. DS still does force replacement for you. Even shouldReplace returns NO to DS.
     return replace.count > 0 ? replace : nil;
     
   } shouldReplace:^BOOL(id deplicate) {

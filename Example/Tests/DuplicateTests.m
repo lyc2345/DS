@@ -351,4 +351,98 @@ describe(@"custom differential use duplicate and replace handler, same key but v
   });
 });
 
+
+describe(@"custom differential use duplicate and replace handler, same key but value changed; If return duplicate is nil. the shouldReplace will be ignore at all time  4.0", ^{
+  
+  NSArray *remote = @[
+                      @{@"name": @"A", @"url": @"A"},
+                      @{@"name": @"B", @"url": @"B"},
+                      @{@"name": @"C", @"url": @"C"}
+                      ];
+  
+  // client add "D", change A' url to A1
+  NSArray *client = @[
+                      @{@"name": @"A", @"url": @"A1"},
+                      @{@"name": @"B", @"url": @"B"},
+                      @{@"name": @"C", @"url": @"C"},
+                      @{@"name": @"D", @"url": @"D"}
+                      ];
+  
+  // last synchronized result == remote
+  NSArray *shadow = @[
+                      @{@"name": @"A", @"url": @"A"},
+                      @{@"name": @"B", @"url": @"B"},
+                      @{@"name": @"C", @"url": @"C"}
+                      ];
+  
+  NSDictionary *diff_client_shadow = [DS diffWins: client andLoses: shadow duplicate:^id(id add, id delete) {
+    
+    return nil;
+    
+  } shouldReplace:^BOOL(id deplicate) {
+    
+    return YES;
+  }];
+  
+  NSDictionary *need_to_apply_to_client = [DS diffWins: remote andLoses: client duplicate:^id(id add, id delete) {
+    
+    __block NSMutableArray *replace = [NSMutableArray array];
+    [add enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+      
+      NSDictionary *addObject = obj;
+      [delete enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+        if ([addObject[@"name"] isEqualToString: obj[@"name"]]) {
+          
+          [replace addObject: addObject];
+        }
+      }];
+    }];
+    return replace.count > 0 ? replace : nil;
+    
+  } shouldReplace:^BOOL(id deplicate) {
+    
+    return YES;
+  }];
+  
+  NSArray *newClient = [DS mergeInto: shadow applyDiff: need_to_apply_to_client];
+  
+  newClient = [DS mergeInto: newClient applyDiff: diff_client_shadow];
+  
+  NSDictionary *need_to_apply_to_remote = [DS diffWins: newClient andLoses: shadow duplicate:^id(id add, id delete) {
+    
+    __block NSMutableArray *replace = [NSMutableArray array];
+    [add enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+      
+      NSDictionary *addObject = obj;
+      [delete enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+        if ([addObject[@"name"] isEqualToString: obj[@"name"]]) {
+          
+          [replace addObject: addObject];
+        }
+      }];
+    }];
+    return replace.count > 0 ? replace : nil;
+    
+  } shouldReplace:^BOOL(id deplicate) {
+    
+    return YES;
+  }];
+  
+  NSArray *newRemote = [DS mergeInto: remote applyDiff: need_to_apply_to_remote];
+  
+  it(@"client == remote", ^{
+    
+    expect([newClient dictSort]).to.equal([newRemote dictSort]);
+    expect([newClient dictSort]).to.equal(@[
+                                            @{@"name": @"A", @"url": @"A1"},
+                                            @{@"name": @"B", @"url": @"B"},
+                                            @{@"name": @"C", @"url": @"C"},
+                                            @{@"name": @"D", @"url": @"D"}
+                                            ]);
+  });
+});
+
+
 SpecEnd

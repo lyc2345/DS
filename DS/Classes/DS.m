@@ -113,7 +113,7 @@
       return [DS diffFormatFromAdd: newAdd delete: @[] replace: @[]];
     }
   }
-  return [DS diffFormatFromAdd: waitToAdd delete: @[] replace: @[]];
+  return [DS diffFormatFromAdd: waitToAdd delete: waitToDelete replace: @[]];
 }
 
 +(NSArray *)mergeInto:(NSArray *)into applyDiff:(NSDictionary *)diff {

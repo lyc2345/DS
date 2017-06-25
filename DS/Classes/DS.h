@@ -39,7 +39,7 @@
 
  @param wins wins is the data that you think is most important
  @param loses loses is the data that you think is less important compares to wins
- @param duplicate block send a "wait to be added" data and a "wait to be deleted" data to find a duplicate for return. But here you need to implement by youself.
+ @param duplicate block send a "wait to be added" data and a "wait to be deleted" data to find a duplicate for return. But here you need to implement by youself. But beware, if you don't return duplicate objects, that means if DS find duplicate objects, DS still does the force replacement for you. Even shouldReplace is NO.
  @param shouldReplace shouldReplace block sent a duplicate data and return a Boolean that you can choose that whether you want to replace it or not.
  @return a diff which is a dictionary that contains format: @{"add", "delete", "replace"}
  */
