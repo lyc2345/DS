@@ -35,18 +35,18 @@
 
 
 /**
- Get a diff between win and lose. Both win and lose are depend what data are you defining and you can handle the duplicate data which you want to replace or not.
+ Get a diff between win and lose.
 
  @param wins wins is the data that you think is most important
  @param loses loses is the data that you think is less important compares to wins
- @param duplicate block send a "wait to be added" data and a "wait to be deleted" data to find a duplicate for return. But here you need to implement by youself. But beware, if you don't return duplicate objects, that means if DS find duplicate objects, DS still does the force replacement for you. Even shouldReplace is NO.
- @param shouldReplace shouldReplace block sent a duplicate data and return a Boolean that you can choose that whether you want to replace it or not.
+ @param key primary key of dictionary of datas
+ @param shouldReplace shouldReplace block sent a oldValue and newValue data and return a Boolean that you can choose that whether you want to replace it or not.
  @return a diff which is a dictionary that contains format: @{"add", "delete", "replace"}
  */
 +(NSDictionary *)diffWins:(NSArray *)wins
                  andLoses:(NSArray *)loses
-                duplicate:(id(^)(id add, id delete))duplicate
-            shouldReplace:(BOOL(^)(id deplicate))shouldReplace;
+               primaryKey:(NSString *)key
+            shouldReplace:(BOOL(^)(id oldValue, id newValue))shouldReplace;
 
 
 

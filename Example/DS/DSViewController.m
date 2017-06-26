@@ -19,11 +19,11 @@
 	[super viewDidLoad];
   
   NSArray *newValue = @[
-                        @{
-                          @"comicName": @"A",
-                          @"author": @"A",
-                          @"url": @"A",
-                          },
+//                        @{
+//                          @"comicName": @"A",
+//                          @"author": @"A",
+//                          @"url": @"A",
+//                          },
                         @{
                           @"comicName": @"B",
                           @"author": @"author B",
@@ -49,25 +49,9 @@
                           }
                         ];
 	
-	NSDictionary *diff = [DS diffWins: newValue andLoses: oldValue duplicate:^id(id add, id delete) {
+	NSDictionary *diff = [DS diffWins: newValue andLoses: oldValue primaryKey: @"comicName" shouldReplace:^BOOL(id oldValue, id newValue) {
     
-    __block NSMutableArray *replace = [NSMutableArray array];
-    [add enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-      
-      NSDictionary *addObject = obj;
-      [delete enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        
-        if ([addObject[@"comicName"] isEqualToString: obj[@"comicName"]]) {
-          
-          [replace addObject: addObject];
-        }
-      }];
-    }];
-    return replace.count > 0 ? replace : nil;
-    
-  } shouldReplace:^BOOL(id deplicate) {
-    
-    return NO;
+    return YES;
   }];
   
   

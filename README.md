@@ -79,9 +79,9 @@ Get a diff between win and lose. Both win and lose are depend what data are you 
 ```
 
 
-This example you can refer to DuplicateTests.m line: 43, test @"custom differential use duplicate and replace handler, same key but value changed 1.0"
+This example you can refer to DuplicateTests.m line: 254, test @"example in README.md"
 ```objective-c
-NSArray *remote = @[
+  NSArray *remote = @[
                       @{@"name": @"A", @"url": @"A"},
                       @{@"name": @"B", @"url": @"B"},
                       @{@"name": @"C", @"url": @"C"}
@@ -90,7 +90,6 @@ NSArray *remote = @[
   // client add "D", change A' url to A1
   NSArray *client = @[
                       @{@"name": @"A", @"url": @"A1"},
-                      @{@"name": @"B", @"url": @"B"},
                       @{@"name": @"C", @"url": @"C"},
                       @{@"name": @"D", @"url": @"D"}
                       ];
@@ -101,48 +100,38 @@ NSArray *remote = @[
                       @{@"name": @"B", @"url": @"B"},
                       @{@"name": @"C", @"url": @"C"}
                       ];
-  // add: [@{@"name": @"D", @"url": @"D"}],
-  // delete: [@{@"name": @"A", @"url": @"A"}],
+  // add    : [@{@"name": @"D", @"url": @"D"}]
+  // delete : [@{@"name": @"B", @"url": @"B"}, @{@"name": @"A", @"url": @"A"}]
   // replace: [@{@"name": @A", @"url": @"A1"}]
-  NSDictionary *diff_client_shadow = [DS diffWins: client andLoses: shadow duplicate:^id(id add, id delete) {
-    
-  // add a custom method to find your own duplicate.
-    __block NSMutableArray *replace = [NSMutableArray array];
-    [add enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-      
-      NSDictionary *addObject = obj;
-      [delete enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        
-        if ([addObject[@"name"] isEqualToString: obj[@"name"]]) {
-          
-          [replace addObject: addObject];
-        }
-      }];
-    }];
-  // return duplicate objects. BEWARE: if you return nil. means you don't find a duplicate object.
-  // so it means if DS find a duplicate object. DS still does force replacement for you. Even shouldReplace returns NO to DS.
-    return replace.count > 0 ? replace : nil;
-    
-  } shouldReplace:^BOOL(id deplicate) {
-    
-    return NO;
+  NSDictionary *diff_client_shadow = [DS diffWins: client andLoses: shadow primaryKey: @"name" shouldReplace:^BOOL(id oldValue, id newValue) {
+
+    return YES;
   }];
   /*
-// shadow @[@{@"name": @"A", @"url": @"A"},
-            @{@"name": @"B", @"url": @"B"},
-            @{@"name": @"C", @"url": @"C"}]
+    // shadow @[@{@"name": @"A", @"url": @"A"},
+              @{@"name": @"B", @"url": @"B"},
+              @{@"name": @"C", @"url": @"C"}]
 
-diff   
-// add: [@{@"name": @"D", @"url": @"D"}],
-// delete: [@{@"name": @"A", @"url": @"A"}],
-// replace: [@{@"name": @A", @"url": @"A1"}]
-*/
+    // diff   
+    // add    : [@{@"name": @"D", @"url": @"D"}],
+    // delete : [@{@"name": @"B", @"url": @"B"}, @{@"name": @"A", @"url": @"A"}]
+    // replace: [@{@"name": @A", @"url": @"A1"}]
+  */
+
+  // obtain a diff from remote and client.
+  // diff   
+  // add    : [@{@"name": @B", @"url": @"B"}],
+  // delete : []
+  // replace: [@{@"name": @A", @"url": @"A"}]
+  NSDictionary *need_to_apply_to_client = [DS diffWins: remote andLoses: client];
+
+  // apply remote_cilent_diff into client.
+  NSArray *newClient = [DS mergeInto: client applyDiff: need_to_apply_to_client];
 		      
-  NSArray *newClient = [DS mergeInto: shadow applyDiff: need_to_apply_to_client];
+  newClient = [DS mergeInto: newClient applyDiff: diff_client_shadow];
 	
-newClient = @[
+  newClient = @[
                       @{@"name": @"A", @"url": @"A1"},
-                      @{@"name": @"B", @"url": @"B"},
                       @{@"name": @"C", @"url": @"C"},
                       @{@"name": @"D", @"url": @"D"}
                       ];
