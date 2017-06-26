@@ -23,13 +23,13 @@
 
 +(NSDictionary *)diffShadowAndClient:(NSArray *)client shadow:(NSArray *)shadow {
   
-  NSDictionary *sets = [DS diffSetWins: shadow losesSet: client];
+  NSDictionary *sets = [DS diffSetWins: client losesSet: shadow];
   
   NSMutableSet *winsMutableSet = sets[@"_winSet"];
   NSMutableSet *losesMutableSet = sets[@"_loseSet"];
   
-  NSArray *waitToDelete = [winsMutableSet allObjects];
-  NSArray *waitToAdd = [losesMutableSet allObjects];
+  NSArray *waitToAdd = [winsMutableSet allObjects];
+  NSArray *waitToDelete = [losesMutableSet allObjects];
   
   NSDictionary *diff = [DS diffFormatFromAdd: waitToAdd delete: waitToDelete replace: @[]];
   //NSLog(@"diff: %@", diff);
