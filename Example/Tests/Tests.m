@@ -226,7 +226,33 @@ describe(@"different device start with empty shadow, diff client_shadow first, a
 SpecEnd
 
 
+SpecBegin(TestNoDiff)
 
+describe(@"See diff nil 1.1", ^{
+  
+  NSArray *remote = @[@"A", @"B", @"C"];
+  NSArray *client = @[@"A", @"B", @"C"];
+  NSDictionary *need_to_apply_to_client = [DS diffWins: remote andLoses: client];
+  
+  it(@"check diff is nil", ^{
+    
+    expect(need_to_apply_to_client).to.equal(nil);
+  });
+});
+
+describe(@"See diff nil 1.2", ^{
+  
+  NSArray *remote = @[@"A"];
+  NSArray *client = @[@"A"];
+  NSDictionary *need_to_apply_to_client = [DS diffWins: remote andLoses: client];
+  
+  it(@"check diff is nil", ^{
+    
+    expect(need_to_apply_to_client).to.equal(nil);
+  });
+});
+
+SpecEnd
 
 /*
  describe(@"these will pass", ^{
