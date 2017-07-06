@@ -221,11 +221,29 @@ describe(@"custom differential use duplicate and replace handler, same key but v
                       @{@"name": @"B", @"url": @"B"},
                       @{@"name": @"C", @"url": @"C"}
                       ];
-  
+  // add    : [@{@"name": @"D", @"url": @"D"}]
+  // delete : [@{@"name": @"B", @"url": @"B"}, @{@"name": @"A", @"url": @"A"}]
+  // replace: [@{@"name": @A", @"url": @"A1"}]
   NSDictionary *diff_client_shadow = [DS diffWins: client andLoses: shadow primaryKey: @"name" shouldReplace:^BOOL(id oldValue, id newValue) {
     
     return YES;
   }];
+  /*
+   // shadow @[@{@"name": @"A", @"url": @"A"},
+   @{@"name": @"B", @"url": @"B"},
+   @{@"name": @"C", @"url": @"C"}]
+   
+   // diff
+   // add    : [@{@"name": @"D", @"url": @"D"}],
+   // delete : [@{@"name": @"B", @"url": @"B"}, @{@"name": @"A", @"url": @"A"}]
+   // replace: [@{@"name": @A", @"url": @"A1"}]
+   */
+  
+  // obtain a diff from remote and client.
+  // diff
+  // add    : [@{@"name": @B", @"url": @"B"}],
+  // delete : []
+  // replace: [@{@"name": @A", @"url": @"A"}]
   NSDictionary *need_to_apply_to_client = [DS diffWins: remote andLoses: client primaryKey: @"name" shouldReplace:^BOOL(id oldValue, id newValue) {
     
     return YES;

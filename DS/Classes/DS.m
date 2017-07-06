@@ -152,7 +152,13 @@
 
 +(NSArray *)mergeInto:(NSArray *)into applyDiff:(NSDictionary *)diff {
   
-  NSMutableArray *newInto;
+  if (!diff) {
+    return into;
+  }
+  
+  if (!into) {
+    into = [NSArray array];
+  }
   
   NSArray *add = diff[@"_add"];
   NSArray *delete = diff[@"_delete"];
@@ -163,7 +169,7 @@
   NSSet *deleteSet = [NSSet setWithArray: delete];
   [intoMutableSet minusSet: deleteSet];
   
-  newInto = [[intoMutableSet allObjects] mutableCopy];
+  NSMutableArray *newInto = [[intoMutableSet allObjects] mutableCopy];
   
   [add enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
     
