@@ -28,6 +28,7 @@
 		F663BACF1F0E19ED000F808C /* CommitIdFailedTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F663BACE1F0E19ED000F808C /* CommitIdFailedTests.m */; };
 		F663BAD31F10D5E7000F808C /* RemoteHashFailedTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F663BAD21F10D5E7000F808C /* RemoteHashFailedTests.m */; };
 		F663BB011F120267000F808C /* PerformanceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F663BB001F120267000F808C /* PerformanceTests.m */; };
+		F6E17A711F14C3CD009B7A9C /* DynamoSyncTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F6E17A701F14C3CD009B7A9C /* DynamoSyncTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +76,7 @@
 		F663BACE1F0E19ED000F808C /* CommitIdFailedTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommitIdFailedTests.m; sourceTree = "<group>"; };
 		F663BAD21F10D5E7000F808C /* RemoteHashFailedTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteHashFailedTests.m; sourceTree = "<group>"; };
 		F663BB001F120267000F808C /* PerformanceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PerformanceTests.m; sourceTree = "<group>"; };
+		F6E17A701F14C3CD009B7A9C /* DynamoSyncTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DynamoSyncTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,6 +173,7 @@
 				F6597FC41EFEC0B6004A6438 /* DuplicateTests.m */,
 				F663BACE1F0E19ED000F808C /* CommitIdFailedTests.m */,
 				F663BAD21F10D5E7000F808C /* RemoteHashFailedTests.m */,
+				F6E17A701F14C3CD009B7A9C /* DynamoSyncTests.m */,
 				F663BB001F120267000F808C /* PerformanceTests.m */,
 				6003F5B6195388D20070C39A /* Supporting Files */,
 			);
@@ -424,6 +427,7 @@
 				F663BACF1F0E19ED000F808C /* CommitIdFailedTests.m in Sources */,
 				6003F5BC195388D20070C39A /* Tests.m in Sources */,
 				F663BB011F120267000F808C /* PerformanceTests.m in Sources */,
+				F6E17A711F14C3CD009B7A9C /* DynamoSyncTests.m in Sources */,
 				F6597FC51EFEC0B6004A6438 /* DuplicateTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

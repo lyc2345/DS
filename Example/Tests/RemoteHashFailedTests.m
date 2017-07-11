@@ -38,58 +38,6 @@
 
 SpecBegin(RemoteHashFailed)
 
-describe(@"remote is nil", ^{
-  
-  NSArray *remote = @[
-                      @{@"name": @"A", @"url": @"A1"},
-                      @{@"name": @"B", @"url": @"B1"},
-                      @{@"name": @"C", @"url": @"C"}
-                      ];
-  
-  // client add "D", change A' url to A1
-  NSArray *client = @[
-                      @{@"name": @"A", @"url": @"A"},
-                      @{@"name": @"B", @"url": @"B"},
-                      @{@"name": @"C", @"url": @"C"},
-                      @{@"name": @"D", @"url": @"D"}
-                      ];
-  
-  // last synchronized result == remote
-  NSArray *shadow = @[
-                      @{@"name": @"A", @"url": @"A"},
-                      @{@"name": @"B", @"url": @"B"},
-                      @{@"name": @"C", @"url": @"C"}
-                      ];
-  
-  // remoteHash is changed
-  shadow = nil;
-  
-  NSDictionary *diff_client_shadow = [DS diffWins: client loses: shadow primaryKey: @"name"];
-  
-  NSDictionary *need_to_apply_to_client = [DS diffWins: remote loses: client primaryKey: @"name"];
-  
-  NSArray *newClient = [DS mergeInto: shadow applyDiff: need_to_apply_to_client];
-  
-  newClient = [DS mergeInto: newClient
-                  applyDiff: diff_client_shadow
-                 primaryKey: @"name"
-              shouldReplace:^BOOL(id oldValue, id newValue) {
-                
-                return YES;
-              }];
-  
-  it(@"client == remote", ^{
-    
-    expect([newClient dictSort]).to.equal(@[
-                                            @{@"name": @"A", @"url": @"A1"},
-                                            @{@"name": @"B", @"url": @"B1"},
-                                            @{@"name": @"C", @"url": @"C"},
-                                            @{@"name": @"D", @"url": @"D"}
-                                            ]);
-  });
-});
-
-
 describe(@"remote is nil, should replace is NO", ^{
   
   NSArray *remote = @[
@@ -127,7 +75,7 @@ describe(@"remote is nil, should replace is NO", ^{
                  primaryKey: @"name"
               shouldReplace:^BOOL(id oldValue, id newValue) {
                 
-                return NO;
+                return YES;
               }];
   
   it(@"client == remote", ^{
@@ -141,6 +89,56 @@ describe(@"remote is nil, should replace is NO", ^{
   });
 });
 
+describe(@"remote is nil", ^{
+  
+  NSArray *remote = @[
+                      @{@"name": @"A", @"url": @"A1"},
+                      @{@"name": @"B", @"url": @"B1"},
+                      @{@"name": @"C", @"url": @"C"}
+                      ];
+  
+  // client add "D", change A' url to A1
+  NSArray *client = @[
+                      @{@"name": @"A", @"url": @"A"},
+                      @{@"name": @"B", @"url": @"B"},
+                      @{@"name": @"C", @"url": @"C"},
+                      @{@"name": @"D", @"url": @"D"}
+                      ];
+  
+  // last synchronized result == remote
+  NSArray *shadow = @[
+                      @{@"name": @"A", @"url": @"A"},
+                      @{@"name": @"B", @"url": @"B"},
+                      @{@"name": @"C", @"url": @"C"}
+                      ];
+  
+  // remoteHash is changed
+  shadow = nil;
+  
+  NSDictionary *diff_client_shadow = [DS diffWins: client loses: shadow primaryKey: @"name"];
+  
+  NSDictionary *need_to_apply_to_client = [DS diffWins: remote loses: client primaryKey: @"name"];
+  
+  NSArray *newClient = [DS mergeInto: shadow applyDiff: need_to_apply_to_client];
+  
+  newClient = [DS mergeInto: newClient
+                  applyDiff: diff_client_shadow
+                 primaryKey: @"name"
+              shouldReplace:^BOOL(id oldValue, id newValue) {
+                
+                return NO;
+              }];
+  
+  it(@"client == remote", ^{
+    
+    expect([newClient dictSort]).to.equal(@[
+                                            @{@"name": @"A", @"url": @"A1"},
+                                            @{@"name": @"B", @"url": @"B1"},
+                                            @{@"name": @"C", @"url": @"C"},
+                                            @{@"name": @"D", @"url": @"D"}
+                                            ]);
+  });
+});
 
 describe(@"remote is nil", ^{
   
@@ -178,7 +176,7 @@ describe(@"remote is nil", ^{
                  primaryKey: @"name"
               shouldReplace:^BOOL(id oldValue, id newValue) {
                 
-                return YES;
+                return NO;
               }];
   
   it(@"client == remote", ^{
@@ -229,7 +227,7 @@ describe(@"remote is nil, should replace is NO", ^{
                  primaryKey: @"name"
               shouldReplace:^BOOL(id oldValue, id newValue) {
                 
-                return NO;
+                return YES;
               }];
   
   it(@"client == remote", ^{
@@ -280,7 +278,7 @@ describe(@"remote is nil", ^{
                  primaryKey: @"name"
               shouldReplace:^BOOL(id oldValue, id newValue) {
                 
-                return YES;
+                return NO;
               }];
   
   it(@"client == remote", ^{
@@ -331,7 +329,7 @@ describe(@"remote is nil, should replace is NO", ^{
                  primaryKey: @"name"
               shouldReplace:^BOOL(id oldValue, id newValue) {
                 
-                return NO;
+                return YES;
               }];
   
   it(@"client == remote", ^{

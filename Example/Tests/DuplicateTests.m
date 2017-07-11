@@ -84,7 +84,7 @@ describe(@"commitId passed, remoteHash passed", ^{
                  primaryKey: @"name"
               shouldReplace:^BOOL(id oldValue, id newValue) {
                 
-    return NO;
+    return YES;
   }];
   
   // diff newClient and remote
@@ -143,7 +143,7 @@ describe(@"commitId failed, remoteHash passed", ^{
                  primaryKey: @"name"
               shouldReplace:^BOOL(id oldValue, id newValue) {
                 
-                return NO;
+                return YES;
               }];
 
   
@@ -206,7 +206,7 @@ describe(@"commitId failed, remoteHash passed, example for README", ^{
                  primaryKey: @"name"
               shouldReplace:^BOOL(id oldValue, id newValue) {
                 
-                return NO;
+                return YES;
               }];
 
   

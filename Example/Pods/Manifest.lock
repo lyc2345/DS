@@ -1,6 +1,6 @@
 PODS:
-  - DS (0.1.7)
-  - Expecta (1.0.5)
+  - DS (0.1.8)
+  - Expecta (1.0.6)
   - Expecta+Snapshots (3.1.1):
     - Expecta (~> 1.0)
     - FBSnapshotTestCase/Core (~> 2.0)
@@ -24,8 +24,8 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  DS: 8baf2f674a83b776c88229985761f61cb695e5ba
-  Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
+  DS: 3e0dbb771bd291406fc1bb52b3033fe9b0e6c5a7
+  Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   Expecta+Snapshots: dcff217eef506dabd6dfdc7864ea2da321fafbb8
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   Specta: f506f3a8361de16bc0dcf3b17b75e269072ba465

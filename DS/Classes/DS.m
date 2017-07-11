@@ -348,7 +348,7 @@
   }];
   // to choose use new or old
   BOOL needReplace = shouldReplace(oldDuplicated, newDuplicated);
-  replace = needReplace == YES ? oldDuplicated : newDuplicated;
+  replace = needReplace == YES ? newDuplicated : oldDuplicated;
   
   NSMutableSet *addMutableSet = [NSMutableSet setWithArray: add];
   // if choose use new set, need to delete old set
