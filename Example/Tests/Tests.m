@@ -66,7 +66,7 @@ describe(@"See remote first, apply remote into client, 1.1", ^{
 	
 	NSArray *remote = @[@"A", @"C"];
 	NSArray *client = @[@"A", @"B", @"C", @"D"];
-	NSDictionary *need_to_apply_to_client = [DS diffWins: remote andLoses: client];
+	NSDictionary *need_to_apply_to_client = [DS diffWins: remote loses: client];
 	NSArray *newClient = [DS mergeInto: client applyDiff: need_to_apply_to_client];
 	
 	it(@"client == remote", ^{
@@ -79,7 +79,7 @@ describe(@"See remote first, apply remote into client, 1.2", ^{
 	
 	NSArray *remote = @[@"A", @"B", @"C", @"D"];
 	NSArray *client = @[@"A", @"B"];
-	NSDictionary *need_to_apply_to_client = [DS diffWins: remote andLoses: client];
+	NSDictionary *need_to_apply_to_client = [DS diffWins: remote loses: client];
 	NSArray *newClient = [DS mergeInto: client applyDiff: need_to_apply_to_client];
 	
 	it(@"client == remote", ^{
@@ -92,7 +92,7 @@ describe(@"See remote first, apply remote into client, 1.3", ^{
 	
 	NSArray *remote = @[@"A", @"C", @"D", @"E"];
 	NSArray *client = @[@"A", @"B", @"D"];
-	NSDictionary *need_to_apply_to_client = [DS diffWins: remote andLoses: client];
+	NSDictionary *need_to_apply_to_client = [DS diffWins: remote loses: client];
 	NSArray *newClient = [DS mergeInto: client applyDiff: need_to_apply_to_client];
 	
 	it(@"client == remote", ^{
@@ -111,7 +111,7 @@ describe(@"See client first, apply client into remote, 2.1", ^{
 	NSArray *client = @[@"A", @"B", @"C", @"D"];
 	NSArray *shadow = remote;
 	
-	NSDictionary *need_to_apply_to_remote = [DS diffShadowAndClient: client shadow:shadow];
+	NSDictionary *need_to_apply_to_remote = [DS diffWins: client loses: remote];
 	NSArray *newRemote = [DS mergeInto: remote applyDiff: need_to_apply_to_remote];
 	
 	shadow = newRemote;
@@ -129,7 +129,7 @@ describe(@"See client first, apply client into remote, 2.2", ^{
 	NSArray *client = @[@"A", @"B", @"D"];
 	NSArray *shadow = remote;
 	
-	NSDictionary *need_to_apply_to_remote = [DS diffShadowAndClient: client shadow:shadow];
+	NSDictionary *need_to_apply_to_remote = [DS diffWins: client loses: remote];
 	NSArray *newRemote = [DS mergeInto: remote applyDiff: need_to_apply_to_remote];
 	
 	shadow = newRemote;
@@ -153,12 +153,12 @@ describe(@"diff client_shadow first, apply remote into client, apply client_shad
 	
 	NSDictionary *diff_client_shadow = [DS diffShadowAndClient: client shadow: shadow];
 	
-	NSDictionary *need_to_apply_to_client = [DS diffWins: remote andLoses: client];
+	NSDictionary *need_to_apply_to_client = [DS diffWins: remote loses: client];
 	NSArray *newClient = [DS mergeInto: shadow applyDiff: need_to_apply_to_client];
 	
 	newClient = [DS mergeInto: newClient applyDiff: diff_client_shadow];
 	
-	NSDictionary *need_to_apply_to_remote = [DS diffShadowAndClient: newClient shadow: shadow];
+	NSDictionary *need_to_apply_to_remote = [DS diffWins: newClient loses: remote];
 	NSArray *newRemote = [DS mergeInto: remote applyDiff: need_to_apply_to_remote];
 	
 	shadow = newRemote;
@@ -179,12 +179,12 @@ describe(@"diff client_shadow first, remote is reset, reset shadow as well, prev
 	
 	NSDictionary *diff_client_shadow = [DS diffShadowAndClient: client shadow: shadow];
 	
-	NSDictionary *need_to_apply_to_client = [DS diffWins: remote andLoses: client];
+	NSDictionary *need_to_apply_to_client = [DS diffWins: remote loses: client];
 	NSArray *newClient = [DS mergeInto: shadow applyDiff: need_to_apply_to_client];
 	
 	newClient = [DS mergeInto: newClient applyDiff: diff_client_shadow];
 	
-	NSDictionary *need_to_apply_to_remote = [DS diffShadowAndClient: newClient shadow: shadow];
+	NSDictionary *need_to_apply_to_remote = [DS diffWins: newClient loses: remote];
 	NSArray *newRemote = [DS mergeInto: remote applyDiff: need_to_apply_to_remote];
 	
 	shadow = newRemote;
@@ -205,12 +205,12 @@ describe(@"different device start with empty shadow, diff client_shadow first, a
 	
 	NSDictionary *diff_client_shadow = [DS diffShadowAndClient: client shadow: shadow];
 	
-	NSDictionary *need_to_apply_to_client = [DS diffWins: remote andLoses: client];
+	NSDictionary *need_to_apply_to_client = [DS diffWins: remote loses: client];
 	NSArray *newClient = [DS mergeInto: shadow applyDiff: need_to_apply_to_client];
 	
 	newClient = [DS mergeInto: newClient applyDiff: diff_client_shadow];
 	
-	NSDictionary *need_to_apply_to_remote = [DS diffShadowAndClient: newClient shadow: shadow];
+	NSDictionary *need_to_apply_to_remote = [DS diffWins: newClient loses: remote];
 	NSArray *newRemote = [DS mergeInto: remote applyDiff: need_to_apply_to_remote];
 	
 	shadow = newRemote;
@@ -232,7 +232,7 @@ describe(@"See diff nil 1.1", ^{
   
   NSArray *remote = @[@"A", @"B", @"C"];
   NSArray *client = @[@"A", @"B", @"C"];
-  NSDictionary *need_to_apply_to_client = [DS diffWins: remote andLoses: client];
+  NSDictionary *need_to_apply_to_client = [DS diffWins: remote loses: client];
   
   it(@"check diff is nil", ^{
     
@@ -244,7 +244,7 @@ describe(@"See diff nil 1.2", ^{
   
   NSArray *remote = @[@"A"];
   NSArray *client = @[@"A"];
-  NSDictionary *need_to_apply_to_client = [DS diffWins: remote andLoses: client];
+  NSDictionary *need_to_apply_to_client = [DS diffWins: remote loses: client];
   
   it(@"check diff is nil", ^{
     

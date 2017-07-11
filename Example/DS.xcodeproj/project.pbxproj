@@ -25,7 +25,9 @@
 		89157D43911F961B8997F7EB /* Pods_DS_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92D5AA9707E3149096FDE390 /* Pods_DS_Example.framework */; };
 		AB4EE7BA19E095A7985D6802 /* Pods_DS_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7261D2CDC35B0B65550F4C2D /* Pods_DS_Tests.framework */; };
 		F6597FC51EFEC0B6004A6438 /* DuplicateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F6597FC41EFEC0B6004A6438 /* DuplicateTests.m */; };
-		F663BACF1F0E19ED000F808C /* EmptyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F663BACE1F0E19ED000F808C /* EmptyTests.m */; };
+		F663BACF1F0E19ED000F808C /* CommitIdFailedTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F663BACE1F0E19ED000F808C /* CommitIdFailedTests.m */; };
+		F663BAD31F10D5E7000F808C /* RemoteHashFailedTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F663BAD21F10D5E7000F808C /* RemoteHashFailedTests.m */; };
+		F663BB011F120267000F808C /* PerformanceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F663BB001F120267000F808C /* PerformanceTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,7 +72,9 @@
 		CF26EE89EA5DC79137FA60CF /* Pods-DS_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DS_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DS_Example/Pods-DS_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		F466BA58210D156C8BF35675 /* Pods-DS_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DS_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DS_Tests/Pods-DS_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		F6597FC41EFEC0B6004A6438 /* DuplicateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DuplicateTests.m; sourceTree = "<group>"; };
-		F663BACE1F0E19ED000F808C /* EmptyTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmptyTests.m; sourceTree = "<group>"; };
+		F663BACE1F0E19ED000F808C /* CommitIdFailedTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommitIdFailedTests.m; sourceTree = "<group>"; };
+		F663BAD21F10D5E7000F808C /* RemoteHashFailedTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteHashFailedTests.m; sourceTree = "<group>"; };
+		F663BB001F120267000F808C /* PerformanceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PerformanceTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,7 +169,9 @@
 			children = (
 				6003F5BB195388D20070C39A /* Tests.m */,
 				F6597FC41EFEC0B6004A6438 /* DuplicateTests.m */,
-				F663BACE1F0E19ED000F808C /* EmptyTests.m */,
+				F663BACE1F0E19ED000F808C /* CommitIdFailedTests.m */,
+				F663BAD21F10D5E7000F808C /* RemoteHashFailedTests.m */,
+				F663BB001F120267000F808C /* PerformanceTests.m */,
 				6003F5B6195388D20070C39A /* Supporting Files */,
 			);
 			path = Tests;
@@ -414,8 +420,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F663BACF1F0E19ED000F808C /* EmptyTests.m in Sources */,
+				F663BAD31F10D5E7000F808C /* RemoteHashFailedTests.m in Sources */,
+				F663BACF1F0E19ED000F808C /* CommitIdFailedTests.m in Sources */,
 				6003F5BC195388D20070C39A /* Tests.m in Sources */,
+				F663BB011F120267000F808C /* PerformanceTests.m in Sources */,
 				F6597FC51EFEC0B6004A6438 /* DuplicateTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1,6 +1,6 @@
 {
   "name": "DS",
-  "version": "0.1.0",
+  "version": "0.1.7",
   "summary": "DS is a Differential Synchronization implement in Objective-C",
   "description": "DS is a Differential Synchronization implement in Objective-C, idea come from Neil Fraser",
   "homepage": "https://github.com/lyc2345/DS",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/lyc2345/DS.git",
-    "tag": "0.1.0"
+    "tag": "0.1.7"
   },
   "platforms": {
     "ios": "8.0"

@@ -49,16 +49,13 @@
                           }
                         ];
 	
-	NSDictionary *diff = [DS diffWins: newValue andLoses: oldValue primaryKey: @"comicName" shouldReplace:^BOOL(id oldValue, id newValue) {
-    
-    return YES;
-  }];
+	NSDictionary *diff = [DS diffWins: newValue loses: oldValue primaryKey: @"comicName"];
   
   
   NSLog(@"diff: %@", diff);
   
   
-  NSDictionary *diff2 = [DS diffWins: @[@"B", @"C", @"D"] andLoses: @[@"A", @"B", @"C"]];
+  NSDictionary *diff2 = [DS diffWins: @[@"B", @"C", @"D"] loses: @[@"A", @"B", @"C"]];
 
   NSLog(@"diff2: %@", diff2);
 }
