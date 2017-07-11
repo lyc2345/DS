@@ -156,7 +156,7 @@ describe(@"s2p1 commitId failed", ^{
   NSDictionary *diff_client_shadow = [DS diffWins: client loses: shadow];
   NSDictionary *need_to_apply_to_client = [DS diffWins: remote loses: client];
   
-  NSArray *newClient = [DS mergeInto: shadow applyDiff: need_to_apply_to_client];
+  NSArray *newClient = [DS mergeInto: client applyDiff: need_to_apply_to_client];
   newClient = [DS mergeInto: newClient
                   applyDiff: diff_client_shadow
                  primaryKey: @"name"
@@ -206,7 +206,7 @@ describe(@"s1p3 commitId failed", ^{
   NSDictionary *diff_client_shadow = [DS diffWins: client loses: shadow];
   NSDictionary *need_to_apply_to_client = [DS diffWins: remote loses: client];
   
-  NSArray *newClient = [DS mergeInto: shadow applyDiff: need_to_apply_to_client];
+  NSArray *newClient = [DS mergeInto: client applyDiff: need_to_apply_to_client];
   newClient = [DS mergeInto: newClient
                   applyDiff: diff_client_shadow
                  primaryKey: @"name"

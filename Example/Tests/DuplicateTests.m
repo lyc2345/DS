@@ -135,9 +135,9 @@ describe(@"commitId failed, remoteHash passed", ^{
   // failed
   
   // pull
-  NSDictionary *diff_remote_client = [DS diffWins: remote loses: client primaryKey: @"name"];
+  NSDictionary *need_to_apply_to_client = [DS diffWins: remote loses: client primaryKey: @"name"];
   
-  newClient = [DS mergeInto: shadow applyDiff: diff_remote_client];
+  newClient = [DS mergeInto: client applyDiff: need_to_apply_to_client];
   newClient = [DS mergeInto: newClient
                   applyDiff: diff_client_shadow
                  primaryKey: @"name"
@@ -198,13 +198,24 @@ describe(@"commitId failed, remoteHash passed, example for README", ^{
   // failed
   
   // pull
-  NSDictionary *diff_remote_client = [DS diffWins: remote loses: client primaryKey: @"name"];
+  NSDictionary *need_to_apply_to_client = [DS diffWins: remote loses: client primaryKey: @"name"];
   
-  newClient = [DS mergeInto: shadow applyDiff: diff_remote_client];
+  newClient = [DS mergeInto: client applyDiff: need_to_apply_to_client];
+
   newClient = [DS mergeInto: newClient
                   applyDiff: diff_client_shadow
                  primaryKey: @"name"
               shouldReplace:^BOOL(id oldValue, id newValue) {
+                
+                it(@"check Replace", ^{
+                  
+                  expect([oldValue dictSort]).to.equal(@[
+                                                         @{@"name": @"A", @"url": @"A"}
+                                                         ]);
+                  expect([newValue dictSort]).to.equal(@[
+                                                         @{@"name": @"A", @"url": @"A1"}
+                                                         ]);
+                });
                 
                 return YES;
               }];
@@ -222,6 +233,83 @@ describe(@"commitId failed, remoteHash passed, example for README", ^{
                                             @{@"name": @"B", @"url": @"B"},
                                             @{@"name": @"C", @"url": @"C"},
                                             @{@"name": @"D", @"url": @"D1"},
+                                            @{@"name": @"E", @"url": @"E"},
+                                            @{@"name": @"F", @"url": @"F1"},
+                                            ]);
+  });
+});
+
+describe(@"commitId failed, remoteHash passed, example for README", ^{
+  
+  NSArray *remote = @[
+                      @{@"name": @"A", @"url": @"A"},
+                      @{@"name": @"B", @"url": @"B"},
+                      @{@"name": @"C", @"url": @"C"},
+                      @{@"name": @"D", @"url": @"D1"},
+                      @{@"name": @"E", @"url": @"E"},
+                      @{@"name": @"F", @"url": @"F1"},
+                      @{@"name": @"G", @"url": @"G"},
+                      ];
+  
+  // client add "D", change A' url to A1
+  NSArray *client = @[
+                      @{@"name": @"A", @"url": @"A1"},
+                      @{@"name": @"C", @"url": @"C"},
+                      @{@"name": @"D", @"url": @"D2"}
+                      ];
+  
+  // last synchronized result == remote
+  NSArray *shadow = @[
+                      @{@"name": @"A", @"url": @"A"},
+                      @{@"name": @"C", @"url": @"C"},
+                      @{@"name": @"D", @"url": @"D"},
+                      @{@"name": @"F", @"url": @"F"},
+                      @{@"name": @"G", @"url": @"G"},
+                      ];
+  
+  NSDictionary *diff_client_shadow = [DS diffWins: client loses: shadow primaryKey: @"name"];
+  
+  NSArray *newClient = [DS mergeInto: shadow applyDiff: diff_client_shadow];
+  // failed
+  
+  // pull
+  NSDictionary *need_to_apply_to_client = [DS diffWins: remote loses: client primaryKey: @"name"];
+  
+  newClient = [DS mergeInto: client applyDiff: need_to_apply_to_client];
+  
+  newClient = [DS mergeInto: newClient
+                  applyDiff: diff_client_shadow
+                 primaryKey: @"name"
+              shouldReplace:^BOOL(id oldValue, id newValue) {
+                
+                it(@"check Replace", ^{
+                  
+                  expect([oldValue dictSort]).to.equal(@[
+                                                         @{@"name": @"A", @"url": @"A"},
+                                                         @{@"name": @"D", @"url": @"D1"}
+                                                         ]);
+                  expect([newValue dictSort]).to.equal(@[
+                                                         @{@"name": @"A", @"url": @"A1"},
+                                                         @{@"name": @"D", @"url": @"D2"}
+                                                         ]);
+                });
+                
+                return YES;
+              }];
+  
+  
+  NSDictionary *diff_newClient_remote = [DS diffWins: newClient loses: remote primaryKey: @"name"];
+  
+  NSArray *newRemote = [DS mergeInto: remote applyDiff: diff_newClient_remote];
+  
+  it(@"client == remote", ^{
+    
+    expect([newClient dictSort]).to.equal([newRemote dictSort]);
+    expect([newClient dictSort]).to.equal(@[
+                                            @{@"name": @"A", @"url": @"A1"},
+                                            @{@"name": @"B", @"url": @"B"},
+                                            @{@"name": @"C", @"url": @"C"},
+                                            @{@"name": @"D", @"url": @"D2"},
                                             @{@"name": @"E", @"url": @"E"},
                                             @{@"name": @"F", @"url": @"F1"},
                                             ]);
