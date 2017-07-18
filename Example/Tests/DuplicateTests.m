@@ -38,7 +38,7 @@
 
 SpecBegin(DuplicateSpecs)
 
-describe(@"commitId passed, remoteHash passed", ^{
+describe(@"commitId passed, remoteHash passed, example in README.md", ^{
   
   NSArray *remote = @[
                       @{@"name": @"A", @"url": @"A"},
