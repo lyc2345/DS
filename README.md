@@ -48,11 +48,11 @@ NSDictionary *diff = [DS diffWins: ["A"] loses: ["A"]];
 ## Usage
 Differential Synchronizatioin step by step
 1. diff client and shadow
-2. apply remote into client
+2. create a newClient and make it equal to remote
 3. apply client_shadow (step.1) into newClient (step.2)
-4. diff remote and whole new client(step.3)
-5. push diff(step.4) , whole new client == new remote
-6. if push success, save whole new client in shadow.
+4. diff remote and newClient (step.3)
+5. push diff (step.4) to remote, so that new remote == new client
+6. if push success, save new client in shadow
 
 ## Example
 This example you can refer to Tests.m line: 148, test 3.1
@@ -64,11 +64,8 @@ NSArray *shadow = @[@"A", @"B", @"C"]; // last synchronized result == remote
 // obtain a diff from client and shadow.
 NSDictionary *diff_client_shadow = [DS diffShadowAndClient: client shadow: shadow];
 
-// obtain a diff from remote and client.
-NSDictionary *need_to_apply_to_client = [DS diffWins: remote andLoses: client];
-
-// apply remote_cilent_diff into client.
-NSArray *newClient = [DS mergeInto: client applyDiff: need_to_apply_to_client];
+// create a newClient and make it equal to remote
+NSArray *newClient = remote;
 
 // obtain a new client that applied diff_remote_client and diff_client_shadow.
 newClient = [DS mergeInto: newClient applyDiff: diff_client_shadow];
@@ -145,9 +142,7 @@ This example you can refer to DuplicateTests.m line: 41, test Spec: "commitId pa
    // replace: [@{@"name": @A", @"url": @"A1"}]
    */
   
-  NSDictionary *need_to_apply_to_client = [DS diffWins: remote loses: client];
-  
-  NSArray *newClient = [DS mergeInto: shadow applyDiff: need_to_apply_to_client];
+  NSArray *newClient = remote;
   
   newClient = [DS mergeInto: newClient
                   applyDiff: diff_client_shadow
