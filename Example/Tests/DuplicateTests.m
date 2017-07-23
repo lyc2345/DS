@@ -74,10 +74,7 @@ describe(@"commitId passed, remoteHash passed, example in README.md", ^{
    // delete : [@{@"name": @"B", @"url": @"B"}, @{@"name": @"A", @"url": @"A"}]
    // replace: [@{@"name": @A", @"url": @"A1"}]
    */
-  
-  NSDictionary *need_to_apply_to_client = [DS diffWins: remote loses: client];
-  
-  NSArray *newClient = [DS mergeInto: shadow applyDiff: need_to_apply_to_client];
+  NSArray *newClient = remote;
   
   newClient = [DS mergeInto: newClient
                   applyDiff: diff_client_shadow
@@ -135,9 +132,7 @@ describe(@"commitId failed, remoteHash passed", ^{
   // failed
   
   // pull
-  NSDictionary *need_to_apply_to_client = [DS diffWins: remote loses: client primaryKey: @"name"];
-  
-  newClient = [DS mergeInto: client applyDiff: need_to_apply_to_client];
+  newClient = remote;
   newClient = [DS mergeInto: newClient
                   applyDiff: diff_client_shadow
                  primaryKey: @"name"
@@ -198,9 +193,7 @@ describe(@"commitId failed, remoteHash passed, example for README", ^{
   // failed
   
   // pull
-  NSDictionary *need_to_apply_to_client = [DS diffWins: remote loses: client primaryKey: @"name"];
-  
-  newClient = [DS mergeInto: client applyDiff: need_to_apply_to_client];
+  newClient = remote;
 
   newClient = [DS mergeInto: newClient
                   applyDiff: diff_client_shadow
@@ -273,9 +266,7 @@ describe(@"commitId failed, remoteHash passed, example for README", ^{
   // failed
   
   // pull
-  NSDictionary *need_to_apply_to_client = [DS diffWins: remote loses: client primaryKey: @"name"];
-  
-  newClient = [DS mergeInto: client applyDiff: need_to_apply_to_client];
+  newClient = remote;
   
   newClient = [DS mergeInto: newClient
                   applyDiff: diff_client_shadow

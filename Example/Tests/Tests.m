@@ -153,8 +153,7 @@ describe(@"diff client_shadow first, apply remote into client, apply client_shad
 	
 	NSDictionary *diff_client_shadow = [DS diffShadowAndClient: client shadow: shadow];
 	
-	NSDictionary *need_to_apply_to_client = [DS diffWins: remote loses: client];
-	NSArray *newClient = [DS mergeInto: shadow applyDiff: need_to_apply_to_client];
+  NSArray *newClient = remote;
 	
 	newClient = [DS mergeInto: newClient applyDiff: diff_client_shadow];
 	
@@ -179,8 +178,7 @@ describe(@"diff client_shadow first, remote is reset, reset shadow as well, prev
 	
 	NSDictionary *diff_client_shadow = [DS diffShadowAndClient: client shadow: shadow];
 	
-	NSDictionary *need_to_apply_to_client = [DS diffWins: remote loses: client];
-	NSArray *newClient = [DS mergeInto: shadow applyDiff: need_to_apply_to_client];
+  NSArray *newClient = remote;
 	
 	newClient = [DS mergeInto: newClient applyDiff: diff_client_shadow];
 	
@@ -205,8 +203,7 @@ describe(@"different device start with empty shadow, diff client_shadow first, a
 	
 	NSDictionary *diff_client_shadow = [DS diffShadowAndClient: client shadow: shadow];
 	
-	NSDictionary *need_to_apply_to_client = [DS diffWins: remote loses: client];
-	NSArray *newClient = [DS mergeInto: shadow applyDiff: need_to_apply_to_client];
+  NSArray *newClient = remote;
 	
 	newClient = [DS mergeInto: newClient applyDiff: diff_client_shadow];
 	
