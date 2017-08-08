@@ -292,6 +292,16 @@
   BOOL needReplace = shouldReplace(oldDuplicated, newDuplicated);
   replace = needReplace == YES ? newDuplicated : oldDuplicated;
   
+  NSMutableArray *editedRelace = [NSMutableArray array];
+  [replace enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"%K = %@", key, obj[key]];
+    NSArray *filteredArray = [array filteredArrayUsingPredicate: predicate];
+    if (filteredArray.count > 0) {
+      [editedRelace addObject: obj];
+    }
+  }];
+  
   NSMutableSet *addMutableSet = [NSMutableSet setWithArray: add];
   // if choose use new set, need to delete old set
   [addMutableSet minusSet: [NSSet setWithArray: newDuplicated]];
@@ -306,7 +316,7 @@
       [newInto addObject: obj];
     }
   }];
-  [replace enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+  [editedRelace enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
     
     if (![newInto containsObject: obj]) {
       [newInto addObject: obj];
@@ -314,6 +324,7 @@
   }];
   return newInto;
 }
+
 
 
 @end
