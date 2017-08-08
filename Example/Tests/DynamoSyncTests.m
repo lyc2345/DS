@@ -202,7 +202,7 @@ describe(@"s1p3 commitId failed", ^{
                       @{@"name": @"F", @"url": @"F"}
                       ];
   
-  NSDictionary *diff_client_shadow = [DS diffWins: client loses: shadow];
+  NSDictionary *diff_client_shadow = [DS diffWins: client loses: shadow primaryKey: @"name"];
   
   NSArray *newClient = remote;
   newClient = [DS mergeInto: newClient

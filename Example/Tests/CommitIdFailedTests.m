@@ -127,7 +127,12 @@ describe(@"commitId failed", ^{
               }];
   
   NSDictionary *need_to_apply_to_remote = [DS diffWins: newClient loses: remote primaryKey: @"name"];
-  NSArray *newRemote = [DS mergeInto: remote applyDiff: need_to_apply_to_remote];
+  NSArray *newRemote = [DS mergeInto: remote
+                           applyDiff: need_to_apply_to_remote
+                          primaryKey: @"name"
+                       shouldReplace:^BOOL(id oldValue, id newValue) {
+                         return NO;
+                       }];
   
   it(@"client == remote", ^{
     
@@ -353,5 +358,104 @@ describe(@"commitId failed", ^{
                                             ]);
   });
 });
+
+describe(@"commitId failed", ^{
+  
+  NSArray *remote = @[
+                      @{@"name": @"A", @"url": @"A"},
+                      @{@"name": @"B", @"url": @"B1"},
+                      @{@"name": @"E", @"url": @"E"}
+                      ];
+  
+  NSArray *client = @[
+                      @{@"name": @"A", @"url": @"A"},
+                      @{@"name": @"C", @"url": @"C2"},
+                      @{@"name": @"D", @"url": @"D"}
+                      ];
+  
+  NSArray *shadow = @[
+                      @{@"name": @"A", @"url": @"A"},
+                      @{@"name": @"B", @"url": @"B"},
+                      @{@"name": @"C", @"url": @"C1"}
+                      ];
+  
+  // [+D]
+  NSDictionary *diff_client_shadow = [DS diffWins: client loses: shadow primaryKey: @"name"];
+  // push failed
+  
+  NSArray *newClient = remote;
+  
+  newClient = [DS mergeInto: newClient
+                  applyDiff: diff_client_shadow
+                 primaryKey: @"name"
+              shouldReplace:^BOOL(id oldValue, id newValue) {
+                
+                return NO;
+              }];
+  
+  NSDictionary *need_to_apply_to_remote = [DS diffWins: newClient loses: remote primaryKey: @"name"];
+  NSArray *newRemote = [DS mergeInto: remote applyDiff: need_to_apply_to_remote];
+  
+  it(@"client == remote", ^{
+    
+    expect([newClient dictSort]).to.equal([newRemote dictSort]);
+    expect([newClient dictSort]).to.equal(@[
+                                            @{@"name": @"A", @"url": @"A"},
+                                            @{@"name": @"B", @"url": @"B1"},
+                                            @{@"name": @"D", @"url": @"D"},
+                                            @{@"name": @"E", @"url": @"E"}
+                                            ]);
+  });
+});
+
+describe(@"commitId failed", ^{
+  
+  NSArray *remote = @[
+                      @{@"name": @"A", @"url": @"A"},
+                      @{@"name": @"B", @"url": @"B1"},
+                      @{@"name": @"E", @"url": @"E"}
+                      ];
+  
+  NSArray *client = @[
+                      @{@"name": @"A", @"url": @"A"},
+                      @{@"name": @"C", @"url": @"C2"},
+                      @{@"name": @"D", @"url": @"D"}
+                      ];
+  
+  NSArray *shadow = @[
+                      @{@"name": @"A", @"url": @"A"},
+                      @{@"name": @"B", @"url": @"B"},
+                      @{@"name": @"C", @"url": @"C1"}
+                      ];
+  
+  // [+D]
+  NSDictionary *diff_client_shadow = [DS diffWins: client loses: shadow primaryKey: @"name"];
+  // push failed
+  
+  NSArray *newClient = remote;
+  
+  newClient = [DS mergeInto: newClient
+                  applyDiff: diff_client_shadow
+                 primaryKey: @"name"
+              shouldReplace:^BOOL(id oldValue, id newValue) {
+                
+                return YES;
+              }];
+  
+  NSDictionary *need_to_apply_to_remote = [DS diffWins: newClient loses: remote primaryKey: @"name"];
+  NSArray *newRemote = [DS mergeInto: remote applyDiff: need_to_apply_to_remote];
+  
+  it(@"client == remote", ^{
+    
+    expect([newClient dictSort]).to.equal([newRemote dictSort]);
+    expect([newClient dictSort]).to.equal(@[
+                                            @{@"name": @"A", @"url": @"A"},
+                                            @{@"name": @"B", @"url": @"B1"},
+                                            @{@"name": @"D", @"url": @"D"},
+                                            @{@"name": @"E", @"url": @"E"}
+                                            ]);
+  });
+});
+
 
 SpecEnd
